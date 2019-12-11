@@ -1,0 +1,21 @@
+@import "src/sass/main";
+
+.Bars {
+	width: 100%;
+	@include absCenter;
+
+	&__bar {
+		width: 1rem;
+		background-color: fuchsia;
+		display: inline-block;
+		margin: 0 0.5rem;
+	}
+
+	&__button {
+		margin: auto;
+		display: inline-block;
+		border-radius: 1rem;
+		background-color: #24a0ed;
+		padding: 1.5rem;
+	}
+}
