@@ -7,6 +7,7 @@ export default class SortingVisualizer extends Component {
 	state = { array: [], numBars: 10 };
 
 	componentDidMount() {
+		console.log("reset");
 		this.resetArray();
 	}
 
@@ -20,8 +21,11 @@ export default class SortingVisualizer extends Component {
 
 	mergeSort = () => {
 		console.log(this.state.array);
-		const sortedArr = algs.mergeSort([...this.state.array]);
-		console.log(sortedArr);
+		const arrayBars = document.getElementsByClassName("Bars__bar");
+		console.log(arrayBars);
+		const sortedArr = algs.getMergeSortAnimations(this.state.array);
+		// console.log(sortedArr);
+		console.log(this.state.array);
 	};
 
 	render() {
