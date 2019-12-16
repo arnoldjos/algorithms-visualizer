@@ -5,6 +5,11 @@
 	transform: translate(-50%, -50%);
 }
 
+@mixin absBottom {
+	position: fixed;
+	bottom: 0;
+}
+
 // Media Query Manager
 /*
 0-600px:    Phone

@@ -1,14 +1,17 @@
-@import "src/sass/main";
+@import "src/sass/variables";
+@import "src/sass/mixins";
 
 .Bars {
 	width: 100%;
-	@include absCenter;
+	margin: 2rem;
+	@include absBottom;
 
 	&__bar {
 		width: 1rem;
-		background-color: fuchsia;
+		border-style: solid;
+		border: 0.5px solid black;
+		background-color: $color-secondary-light;
 		display: inline-block;
-		margin: 0 0.5rem;
 	}
 
 	&__button {
