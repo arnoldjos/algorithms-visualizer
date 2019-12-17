@@ -26,7 +26,7 @@ export function getMergeSortAnimations(arr: Array<number>): Array<any> {
 	const animations: Array<any> = [];
 	const auxArray = arr.slice();
 	mergeSort(arr, 0, arr.length - 1, auxArray, animations);
-	return animations;
+	return [animations, arr];
 }
 
 function mergeSort(

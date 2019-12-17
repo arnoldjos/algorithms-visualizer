@@ -1,14 +1,31 @@
 import React, { Component } from "react";
+import Button from "@material-ui/core/Button";
+import Container from "@material-ui/core/Container";
 
 import * as algs from "./algorithms";
 import css from "./Sorting.module.scss";
 
 export default class Sorting extends Component {
-	state = { array: [], numBars: 100, refs: [] };
+	state = {
+		array: [],
+		numBars: Math.floor(window.innerWidth / 15),
+		disabled: false
+	};
 
 	componentDidMount() {
 		this.resetArray();
+		window.addEventListener("resize", this.updateDimensions);
 	}
+
+	componentWillUnmount() {
+		window.removeEventListener("resize", this.updateDimensions);
+	}
+
+	updateDimensions = () => {
+		this.setState({ numBars: Math.floor(window.innerWidth / 15) });
+		console.log(this.state);
+		this.resetArray();
+	};
 
 	resetArray = () => {
 		const array = [];
@@ -19,7 +36,10 @@ export default class Sorting extends Component {
 	};
 
 	mergeSort = () => {
-		const animations = algs.getMergeSortAnimations(this.state.array);
+		this.disableButtons();
+		const [animations, sortedArray] = algs.getMergeSortAnimations([
+			...this.state.array
+		]);
 		for (let i = 0; i < animations.length; i++) {
 			const arrayBars: any = document.getElementsByClassName(
 				css.Bars__bar
@@ -39,31 +59,60 @@ export default class Sorting extends Component {
 					const [barOneIdx, newHeight] = animations[i];
 					const barOneStyle = arrayBars[barOneIdx].style;
 					barOneStyle.height = `${newHeight}px`;
+					if (i === animations.length - 1) {
+						this.enableButtons();
+						this.setState({ array: sortedArray });
+					}
 				}, i * 2);
 			}
 		}
+		// this.enableButtons();
+	};
+
+	disableButtons = () => {
+		this.setState({ disabled: true });
+	};
+
+	enableButtons = () => {
+		this.setState({ disabled: false });
 	};
 
 	render() {
-		const { array } = this.state;
-		console.log("rendering");
+		const { array, disabled } = this.state;
 
 		return (
-			<div className={css.Bars}>
-				{array.map((value, idx) => (
-					<div
-						style={{ height: `${value}px` }}
-						className={css.Bars__bar}
-						key={idx}
-					></div>
-				))}
-				<button onClick={this.resetArray} className={css.Bars__button}>
-					Generate New Array
-				</button>
-				<button onClick={this.mergeSort} className={css.Bars__button}>
-					Merge Sort
-				</button>
-			</div>
+			<React.Fragment>
+				<Container maxWidth="xl">
+					<div className={css.Bars__controls}>
+						<Button
+							variant="contained"
+							onClick={this.resetArray}
+							color="secondary"
+							disabled={disabled}
+						>
+							Generate New Array
+						</Button>
+						<Button
+							variant="contained"
+							onClick={this.mergeSort}
+							color="secondary"
+							disabled={disabled}
+						>
+							Merge Sort
+						</Button>
+					</div>
+
+					<div className={css.Bars}>
+						{array.map((value, idx) => (
+							<div
+								style={{ height: `${value}px` }}
+								className={css.Bars__bar}
+								key={idx}
+							></div>
+						))}
+					</div>
+				</Container>
+			</React.Fragment>
 		);
 	}
 
