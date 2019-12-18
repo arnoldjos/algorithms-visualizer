@@ -1,26 +1,3 @@
-// export function mergeSort(arr: Array<number>): Array<number> {
-// 	if (arr.length < 2) return arr;
-
-// 	const mid = Math.floor(arr.length / 2);
-// 	const left = arr.slice(0, mid);
-// 	const right = arr.slice(mid);
-// 	return merge(mergeSort(left), mergeSort(right));
-// }
-
-// function merge(left: Array<number>, right: Array<number>): Array<number> {
-// 	let arr: Array<any> = [];
-
-// 	while (left.length && right.length) {
-// 		if (left[0] < right[0]) {
-// 			arr.push(left.shift());
-// 		} else {
-// 			arr.push(right.shift());
-// 		}
-// 	}
-
-// 	return arr.concat(left.concat(right));
-// }
-
 export function getMergeSortAnimations(arr: Array<number>): Array<any> {
 	if (arr.length < 2) return arr;
 	const animations: Array<any> = [];
@@ -86,4 +63,37 @@ function merge(
 		animations.push([k, auxArray[j]]);
 		mainArray[k++] = auxArray[j++];
 	}
+}
+
+export async function bubbleSort(
+	array: Array<number>,
+	arrayBars: any,
+	speed: number
+) {
+	let animations: Array<any> = [];
+	const arrLength = array.length;
+	for (let i = 0; i < arrLength - 1; i++) {
+		for (let j = 0; j < arrLength - i - 1; j++) {
+			await new Promise(resolve =>
+				setTimeout(() => {
+					resolve();
+				}, speed)
+			);
+			arrayBars[j].style.backgroundColor = "#FF4949";
+			arrayBars[j + 1].style.backgroundColor = "#FF4949";
+
+			if (array[j] > array[j + 1]) {
+				const temp = array[j];
+
+				array[j] = array[j + 1];
+				array[j + 1] = temp;
+
+				arrayBars[j].style.height = `${array[j]}px`;
+				arrayBars[j + 1].style.height = `${array[j + 1]}px`;
+				arrayBars[j].style.backgroundColor = "green";
+				arrayBars[j + 1].style.backgroundColor = "greem";
+			}
+		}
+	}
+	return [array];
 }

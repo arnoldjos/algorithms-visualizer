@@ -23,7 +23,6 @@ export default class Sorting extends Component {
 
 	updateDimensions = () => {
 		this.setState({ numBars: Math.floor(window.innerWidth / 15) });
-		console.log(this.state);
 		this.resetArray();
 	};
 
@@ -49,7 +48,7 @@ export default class Sorting extends Component {
 				const [barOneIdx, barTwoIdx] = animations[i];
 				const barOneStyle = arrayBars[barOneIdx].style;
 				const barTwoStyle = arrayBars[barTwoIdx].style;
-				const color = i % 3 === 0 ? "red" : "#7986cb";
+				const color = i % 3 === 0 ? "#e91e63" : "#7986cb";
 				setTimeout(() => {
 					barOneStyle.backgroundColor = color;
 					barTwoStyle.backgroundColor = color;
@@ -66,7 +65,22 @@ export default class Sorting extends Component {
 				}, i * 2);
 			}
 		}
-		// this.enableButtons();
+	};
+
+	bubbleSort = async () => {
+		this.disableButtons();
+
+		const sort = console.log("Bubble Sort");
+		console.log(this.state.array);
+		const arrayBars: any = document.getElementsByClassName(css.Bars__bar);
+
+		const sortedArray = await algs.bubbleSort(
+			[...this.state.array],
+			arrayBars,
+			0.5
+		);
+		// console.log(sortedArray);
+		// this.setState({ array: sortedArray });
 	};
 
 	disableButtons = () => {
@@ -94,11 +108,28 @@ export default class Sorting extends Component {
 						</Button>
 						<Button
 							variant="contained"
+							onClick={this.bubbleSort}
+							color="secondary"
+							disabled={disabled}
+						>
+							Bubble Sort
+						</Button>
+						<Button
+							variant="contained"
 							onClick={this.mergeSort}
 							color="secondary"
 							disabled={disabled}
 						>
 							Merge Sort
+						</Button>
+
+						<Button
+							variant="contained"
+							onClick={this.mergeSort}
+							color="secondary"
+							disabled={disabled}
+						>
+							Quick Sort
 						</Button>
 					</div>
 

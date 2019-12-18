@@ -14,6 +14,7 @@
 		border: 0.5px solid black;
 		background-color: $color-secondary-light;
 		display: inline-block;
+		transition: 0.2s all ease;
 	}
 
 	&__controls {
