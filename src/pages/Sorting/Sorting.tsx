@@ -4,16 +4,18 @@ import Container from "@material-ui/core/Container";
 
 import * as algs from "./algorithms";
 import css from "./Sorting.module.scss";
+import { theme } from "../../themes/theme";
 
 export default class Sorting extends Component {
 	state = {
 		array: [],
 		numBars: Math.floor(window.innerWidth / 15),
-		disabled: false
+		disabled: false,
+		sorting: false
 	};
 
 	componentDidMount() {
-		this.resetArray();
+		this.createArray(null, true);
 		window.addEventListener("resize", this.updateDimensions);
 	}
 
@@ -22,27 +24,39 @@ export default class Sorting extends Component {
 	}
 
 	updateDimensions = () => {
-		this.setState({ numBars: Math.floor(window.innerWidth / 15) });
-		this.resetArray();
+		if (!this.state.sorting) {
+			this.setState({ numBars: Math.floor(window.innerWidth / 15) });
+			this.createArray(null);
+		}
 	};
 
-	resetArray = () => {
+	createArray = (event: any, initial = false) => {
 		const array = [];
 		for (let i = 0; i < this.state.numBars; i++) {
 			array.push(this.randomIntFromInterval(5, 500));
 		}
+		this.resetBarColors(initial);
 		this.setState({ array });
 	};
 
+	resetBarColors = (initial = false) => {
+		if (!initial) {
+			const arrayBars: any = this.getBars();
+
+			for (let i = 0; i < arrayBars.length; i++) {
+				arrayBars[i].style.backgroundColor =
+					theme.palette.tertiary.light;
+			}
+		}
+	};
+
 	mergeSort = () => {
-		this.disableButtons();
+		this.startSort();
 		const [animations, sortedArray] = algs.getMergeSortAnimations([
 			...this.state.array
 		]);
 		for (let i = 0; i < animations.length; i++) {
-			const arrayBars: any = document.getElementsByClassName(
-				css.Bars__bar
-			);
+			const arrayBars: any = this.getBars();
 			const isColorChange = i % 3 !== 2;
 			if (isColorChange) {
 				const [barOneIdx, barTwoIdx] = animations[i];
@@ -59,7 +73,7 @@ export default class Sorting extends Component {
 					const barOneStyle = arrayBars[barOneIdx].style;
 					barOneStyle.height = `${newHeight}px`;
 					if (i === animations.length - 1) {
-						this.enableButtons();
+						this.endSort();
 						this.setState({ array: sortedArray });
 					}
 				}, i * 2);
@@ -68,31 +82,34 @@ export default class Sorting extends Component {
 	};
 
 	bubbleSort = async () => {
-		this.disableButtons();
+		this.startSort();
+		this.setState({ sorting: true });
 
-		const sort = console.log("Bubble Sort");
-		console.log(this.state.array);
-		const arrayBars: any = document.getElementsByClassName(css.Bars__bar);
-
+		const arrayBars: any = this.getBars();
 		const sortedArray = await algs.bubbleSort(
 			[...this.state.array],
 			arrayBars,
 			0.5
 		);
-		// console.log(sortedArray);
-		// this.setState({ array: sortedArray });
+
+		this.endSort();
+		this.setState({ sorting: false, array: sortedArray });
 	};
 
-	disableButtons = () => {
-		this.setState({ disabled: true });
+	getBars = () => {
+		return document.getElementsByClassName(css.Bars__bar);
 	};
 
-	enableButtons = () => {
-		this.setState({ disabled: false });
+	startSort = () => {
+		this.setState({ sorting: true });
+	};
+
+	endSort = () => {
+		this.setState({ sorting: false });
 	};
 
 	render() {
-		const { array, disabled } = this.state;
+		const { array, sorting } = this.state;
 
 		return (
 			<React.Fragment>
@@ -100,9 +117,9 @@ export default class Sorting extends Component {
 					<div className={css.Bars__controls}>
 						<Button
 							variant="contained"
-							onClick={this.resetArray}
+							onClick={event => this.createArray(event, false)}
 							color="secondary"
-							disabled={disabled}
+							disabled={sorting}
 						>
 							Generate New Array
 						</Button>
@@ -110,7 +127,7 @@ export default class Sorting extends Component {
 							variant="contained"
 							onClick={this.bubbleSort}
 							color="secondary"
-							disabled={disabled}
+							disabled={sorting}
 						>
 							Bubble Sort
 						</Button>
@@ -118,7 +135,7 @@ export default class Sorting extends Component {
 							variant="contained"
 							onClick={this.mergeSort}
 							color="secondary"
-							disabled={disabled}
+							disabled={sorting}
 						>
 							Merge Sort
 						</Button>
@@ -127,7 +144,7 @@ export default class Sorting extends Component {
 							variant="contained"
 							onClick={this.mergeSort}
 							color="secondary"
-							disabled={disabled}
+							disabled={sorting}
 						>
 							Quick Sort
 						</Button>

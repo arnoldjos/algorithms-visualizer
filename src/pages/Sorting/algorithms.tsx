@@ -1,3 +1,5 @@
+import { theme } from "../../themes/theme";
+
 export function getMergeSortAnimations(arr: Array<number>): Array<any> {
 	if (arr.length < 2) return arr;
 	const animations: Array<any> = [];
@@ -70,17 +72,17 @@ export async function bubbleSort(
 	arrayBars: any,
 	speed: number
 ) {
-	let animations: Array<any> = [];
 	const arrLength = array.length;
 	for (let i = 0; i < arrLength - 1; i++) {
 		for (let j = 0; j < arrLength - i - 1; j++) {
+			arrayBars[j].style.backgroundColor = theme.palette.primary.dark;
+			arrayBars[j + 1].style.backgroundColor = theme.palette.primary.dark;
+
 			await new Promise(resolve =>
 				setTimeout(() => {
 					resolve();
 				}, speed)
 			);
-			arrayBars[j].style.backgroundColor = "#FF4949";
-			arrayBars[j + 1].style.backgroundColor = "#FF4949";
 
 			if (array[j] > array[j + 1]) {
 				const temp = array[j];
@@ -90,10 +92,17 @@ export async function bubbleSort(
 
 				arrayBars[j].style.height = `${array[j]}px`;
 				arrayBars[j + 1].style.height = `${array[j + 1]}px`;
-				arrayBars[j].style.backgroundColor = "green";
-				arrayBars[j + 1].style.backgroundColor = "greem";
 			}
+
+			arrayBars[j].style.backgroundColor = "#58B7FF";
+			arrayBars[j + 1].style.backgroundColor = "#58B7FF";
+		}
+
+		arrayBars[arrayBars.length - i - 1].style.backgroundColor =
+			theme.palette.success.main;
+		if (i === array.length - 2) {
+			arrayBars[0].style.backgroundColor = theme.palette.success.main;
 		}
 	}
-	return [array];
+	return array;
 }
