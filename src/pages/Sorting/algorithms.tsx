@@ -75,8 +75,8 @@ export async function bubbleSort(
 	const arrLength = array.length;
 	for (let i = 0; i < arrLength - 1; i++) {
 		for (let j = 0; j < arrLength - i - 1; j++) {
-			arrayBars[j].style.backgroundColor = theme.palette.primary.dark;
-			arrayBars[j + 1].style.backgroundColor = theme.palette.primary.dark;
+			arrayBars[j].style.backgroundColor = theme.palette.error.main;
+			arrayBars[j + 1].style.backgroundColor = theme.palette.error.main;
 
 			await new Promise(resolve =>
 				setTimeout(() => {
@@ -94,8 +94,9 @@ export async function bubbleSort(
 				arrayBars[j + 1].style.height = `${array[j + 1]}px`;
 			}
 
-			arrayBars[j].style.backgroundColor = "#58B7FF";
-			arrayBars[j + 1].style.backgroundColor = "#58B7FF";
+			arrayBars[j].style.backgroundColor = theme.palette.tertiary.light;
+			arrayBars[j + 1].style.backgroundColor =
+				theme.palette.tertiary.light;
 		}
 
 		arrayBars[arrayBars.length - i - 1].style.backgroundColor =

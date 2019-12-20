@@ -50,11 +50,12 @@ export default class Sorting extends Component {
 		}
 	};
 
-	mergeSort = () => {
+	mergeSort = async () => {
 		this.startSort();
 		const [animations, sortedArray] = algs.getMergeSortAnimations([
 			...this.state.array
 		]);
+		this.endSort();
 		for (let i = 0; i < animations.length; i++) {
 			const arrayBars: any = this.getBars();
 			const isColorChange = i % 3 !== 2;
@@ -66,7 +67,7 @@ export default class Sorting extends Component {
 				setTimeout(() => {
 					barOneStyle.backgroundColor = color;
 					barTwoStyle.backgroundColor = color;
-				}, i * 2);
+				}, i * 10);
 			} else {
 				setTimeout(() => {
 					const [barOneIdx, newHeight] = animations[i];
@@ -76,7 +77,7 @@ export default class Sorting extends Component {
 						this.endSort();
 						this.setState({ array: sortedArray });
 					}
-				}, i * 2);
+				}, i * 10);
 			}
 		}
 	};
@@ -89,7 +90,7 @@ export default class Sorting extends Component {
 		const sortedArray = await algs.bubbleSort(
 			[...this.state.array],
 			arrayBars,
-			0.5
+			50
 		);
 
 		this.endSort();
@@ -150,7 +151,7 @@ export default class Sorting extends Component {
 						</Button>
 					</div>
 
-					<div className={css.Bars}>
+					<div className={css.Bars} id="Bars">
 						{array.map((value, idx) => (
 							<div
 								style={{ height: `${value}px` }}
