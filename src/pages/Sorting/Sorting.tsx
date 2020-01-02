@@ -52,34 +52,12 @@ export default class Sorting extends Component {
 
 	mergeSort = async () => {
 		this.startSort();
-		const [animations, sortedArray] = algs.getMergeSortAnimations([
-			...this.state.array
-		]);
+		const sortedArray = await algs.startMergeSort(
+			[...this.state.array],
+			this.getBars()
+		);
 		this.endSort();
-		for (let i = 0; i < animations.length; i++) {
-			const arrayBars: any = this.getBars();
-			const isColorChange = i % 3 !== 2;
-			if (isColorChange) {
-				const [barOneIdx, barTwoIdx] = animations[i];
-				const barOneStyle = arrayBars[barOneIdx].style;
-				const barTwoStyle = arrayBars[barTwoIdx].style;
-				const color = i % 3 === 0 ? "#e91e63" : "#7986cb";
-				setTimeout(() => {
-					barOneStyle.backgroundColor = color;
-					barTwoStyle.backgroundColor = color;
-				}, i * 10);
-			} else {
-				setTimeout(() => {
-					const [barOneIdx, newHeight] = animations[i];
-					const barOneStyle = arrayBars[barOneIdx].style;
-					barOneStyle.height = `${newHeight}px`;
-					if (i === animations.length - 1) {
-						this.endSort();
-						this.setState({ array: sortedArray });
-					}
-				}, i * 10);
-			}
-		}
+		this.setState({ array: sortedArray });
 	};
 
 	bubbleSort = async () => {
@@ -94,7 +72,16 @@ export default class Sorting extends Component {
 		);
 
 		this.endSort();
-		this.setState({ sorting: false, array: sortedArray });
+		this.setState({ array: sortedArray });
+	};
+
+	quickSort = async () => {
+		console.log(this.state.array);
+		const sortedArray = await algs.quickSort(
+			[...this.state.array],
+			this.getBars()
+		);
+		console.log(sortedArray);
 	};
 
 	getBars = () => {
@@ -143,7 +130,7 @@ export default class Sorting extends Component {
 
 						<Button
 							variant="contained"
-							onClick={this.mergeSort}
+							onClick={this.quickSort}
 							color="secondary"
 							disabled={sorting}
 						>
